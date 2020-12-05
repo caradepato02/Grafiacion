@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
     private const string AXIS_H = "Horizontal", AXIS_V ="Vertical";
@@ -11,11 +12,21 @@ public class PlayerController : MonoBehaviour {
     private bool ataca = false;
     private Animator _animator;
     private Rigidbody2D _rigidbody;
+    private int count;
+    public Text countText;
+    public Text wintext;
+    
 
     // Start is called before the first frame update
     void Start () {
          _animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody2D>();
+        count = 0;
+        wintext.text = "";
+        countText.text = "Manzanas recolectadas: " + count.ToString() + "/10";
+        
+
+        
     }
 
     // Update is called once per frame
@@ -52,4 +63,24 @@ public class PlayerController : MonoBehaviour {
         _animator.SetBool("camina",camina);
         _animator.SetBool("ataca",ataca);
     }
+    
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("PickUp"))
+        {
+            other.gameObject.SetActive(false);
+            count = count + 1;
+            countText.text = "Manzanas recolectadas: " + count.ToString() + "/10";
+            if (count == 10)
+            {
+                wintext.text = "GANASTE :D";
+            }
+        }
+
+        
+    }
+    
+
+
+
 }
